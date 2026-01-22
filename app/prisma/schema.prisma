@@ -10,6 +10,43 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+}
+
+model Article {
+  id String @id @default(uuid())
+
+  text   String
+  public Boolean
+  image  String
+  type   String
+
+  createdAt DateTime  @default(now())
+  updateAt  DateTime  @default(now()) @updatedAt
+  deleteAt  DateTime?
+
+  authorId   String
+  author     Author     @relation(fields: [authorId], references: [id])
+  categories Category[]
+}
+
+model Author {
+  id String @id @default(uuid())
+
+  firstName   String
+  LastName    String
+  Picture     String
+  description String
+
+  createdAt DateTime  @default(now())
+  updateAt  DateTime  @default(now()) @updatedAt
+  deleteAt  DateTime?
+
+  articles Article[]
+}
+
+model Category {
+  id   String @id @default(uuid())
+  name String
+
+  articles Article[]
 }
